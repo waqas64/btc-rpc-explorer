@@ -8,6 +8,8 @@ var bitcoinjs = require('bitcoinjs-lib');
 var sha256 = require("crypto-js/sha256");
 var hexEnc = require("crypto-js/enc-hex");
 var Decimal = require("decimal.js");
+const path = require('path')
+const fs = require('fs')
 
 var utils = require('./../app/utils.js');
 var coins = require("./../app/coins.js");
@@ -229,56 +231,67 @@ router.get("/changeSetting", function(req, res) {
 });
 
 router.get("/blocks", function(req, res) {
-	var limit = config.site.browseBlocksPageSize;
-	var offset = 0;
-	var sort = "desc";
+	const indexFile = path.join(__dirname, "../frontend/build/", "index.html")
 
-	if (req.query.limit) {
-		limit = parseInt(req.query.limit);
-	}
-
-	if (req.query.offset) {
-		offset = parseInt(req.query.offset);
-	}
-
-	if (req.query.sort) {
-		sort = req.query.sort;
-	}
-
-	res.locals.limit = limit;
-	res.locals.offset = offset;
-	res.locals.sort = sort;
-	res.locals.paginationBaseUrl = "/blocks";
-
-	coreApi.getBlockchainInfo().then(function(getblockchaininfo) {
-		res.locals.blockCount = getblockchaininfo.blocks;
-		res.locals.blockOffset = offset;
-
-		var blockHeights = [];
-		if (sort == "desc") {
-			for (var i = (getblockchaininfo.blocks - offset); i > (getblockchaininfo.blocks - offset - limit); i--) {
-				if (i >= 0) {
-					blockHeights.push(i);
-				}
-			}
-		} else {
-			for (var i = offset; i < (offset + limit); i++) {
-				if (i >= 0) {
-					blockHeights.push(i);
-				}
-			}
+	fs.access(indexFile, fs.constants.R_OK, err => {
+    if (err) {
+      next();
+    } else {
+			res.sendFile(indexFile);
 		}
+  });
+
+
+	// var limit = config.site.browseBlocksPageSize;
+	// var offset = 0;
+	// var sort = "desc";
+
+	// if (req.query.limit) {
+	// 	limit = parseInt(req.query.limit);
+	// }
+
+	// if (req.query.offset) {
+	// 	offset = parseInt(req.query.offset);
+	// }
+
+	// if (req.query.sort) {
+	// 	sort = req.query.sort;
+	// }
+
+	// res.locals.limit = limit;
+	// res.locals.offset = offset;
+	// res.locals.sort = sort;
+	// res.locals.paginationBaseUrl = "/blocks";
+
+	// coreApi.getBlockchainInfo().then(function(getblockchaininfo) {
+	// 	res.locals.blockCount = getblockchaininfo.blocks;
+	// 	res.locals.blockOffset = offset;
+
+	// 	var blockHeights = [];
+	// 	if (sort == "desc") {
+	// 		for (var i = (getblockchaininfo.blocks - offset); i > (getblockchaininfo.blocks - offset - limit); i--) {
+	// 			if (i >= 0) {
+	// 				blockHeights.push(i);
+	// 			}
+	// 		}
+	// 	} else {
+	// 		for (var i = offset; i < (offset + limit); i++) {
+	// 			if (i >= 0) {
+	// 				blockHeights.push(i);
+	// 			}
+	// 		}
+	// 	}
 		
-		coreApi.getBlocksByHeight(blockHeights).then(function(blocks) {
-			res.locals.blocks = blocks;
+	// 	coreApi.getBlocksByHeight(blockHeights).then(function(blocks) {
+	// 		res.locals.blocks = blocks;
 
-			res.render("blocks");
-		});
-	}).catch(function(err) {
-		res.locals.userMessage = "Error: " + err;
+	// 		res.render("blocks");
+	// 	});
+	// }).catch(function(err) {
+	// 	res.locals.userMessage = "Error: " + err;
 
-		res.render("blocks");
-	});
+	// 	res.render("blocks");
+	// });
 });
 
 router.get("/search", function(req, res) {
