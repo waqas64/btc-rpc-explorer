@@ -54,6 +54,7 @@ app.use(session({
 	saveUninitialized: false
 }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, "frontend/build"), {index: '_'})); // React
 
 process.on("unhandledRejection", (reason, p) => {
 	console.log("Unhandled Rejection at: Promise", p, "reason:", reason, "stack:", reason.stack);
