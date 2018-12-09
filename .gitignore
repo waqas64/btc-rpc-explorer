@@ -57,6 +57,4 @@ typings/
 # dotenv environment variables file
 .env
 
-app/credentials.js
-
 public/css/radial-progress.css
