@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "app-root-path": "^2.1.0",
     "axios": "^0.18.0",
     "decimal.js": "^10.0.1",
     "mobx": "^5.7.0",

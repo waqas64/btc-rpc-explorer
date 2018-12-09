@@ -1,3 +1,6 @@
+const appRootPath = require("app-root-path");
+const path = require("path");
+
 const Decimal = require("decimal.js");
 const Decimal8 = Decimal.clone({ precision: 8, rounding: 8 });
 
@@ -32,7 +35,7 @@ var btcCurrencyUnits = [
 module.exports = {
   name: "BSV",
   ticker: "BSV",
-  logoUrl: "/img/logo/bsv.png",
+  logo: "../../static/logo/bsv.png",
   siteTitle: "WhatsOnChain.com",
   pageTitle: "BSV Explorer",
   siteDescriptionHtml:
