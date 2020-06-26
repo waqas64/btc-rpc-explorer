@@ -20,4 +20,4 @@ module.exports = {
 
 	// optional: sentry.io error-tracking url
 	sentryUrl:"",
-};
+};.
